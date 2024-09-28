@@ -69,8 +69,8 @@ app.get('/municipio-bairros', async (req, res) => {
     try {
         const municipios_resp = await axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/municipios');
         let list_municipios = municipios_resp.data;
-        municipioString = municipio.split('-')
-        let find_municipio = list_municipios.find(m => m.nome.toLowerCase() === municipioString.join(" ").toLowerCase());
+        municipioString = municipio.split('-').join(" ").toLowerCase()
+        let find_municipio = list_municipios.find(m => m.nome.toLowerCase() === municipioString);
 
         if(!find_municipio){
             res.status(404).json({ 
@@ -83,7 +83,7 @@ app.get('/municipio-bairros', async (req, res) => {
         const find_bairros = list_bairros.map(bairro => bairro.nome);
         
         res.json({
-            municipio: municipio,
+            municipio: municipioString,
             bairros: find_bairros
         });
 
